@@ -1,0 +1,82 @@
+CREATE TABLE representants (
+	nr INTEGER PRIMARY KEY,
+	nom VARCHAR(100),
+	ville VARCHAR(100)
+);
+
+CREATE TABLE produits (
+	np INTEGER PRIMARY KEY,
+	nom VARCHAR(100),
+	couleur VARCHAR(100),
+	poids INTEGER
+);
+
+CREATE TABLE clients (
+	nc INTEGER PRIMARY KEY,
+	nom VARCHAR(100),
+	ville VARCHAR(100)
+);
+
+CREATE TABLE ventes (
+	nr INTEGER REFERENCES representants(nr),
+	np INTEGER REFERENCES produits(np),
+	nc INTEGER REFERENCES clients(nc),
+	quantite INTEGER,
+	PRIMARY KEY (nr, np, nc)
+);
+
+INSERT INTO representants (nr, nom, ville) VALUES (1, 'Stephane', 'Lyon');
+INSERT INTO representants (nr, nom, ville) VALUES (2, 'Benjamin', 'Paris');
+INSERT INTO representants (nr, nom, ville) VALUES (3, 'Leonard', 'Lyon');
+INSERT INTO representants (nr, nom, ville) VALUES (4, 'Antoine', 'Brest');
+INSERT INTO representants (nr, nom, ville) VALUES (5, 'Bruno', 'Bayonne');
+
+INSERT INTO produits (np, nom, couleur, poids) VALUES (1, 'Aspirateur', 'Rouge', 3546);
+INSERT INTO produits (np, nom, couleur, poids) VALUES (2, 'Trottinette', 'Bleu', 1423);
+INSERT INTO produits (np, nom, couleur, poids) VALUES (3, 'Chaise', 'Blanc', 3827);
+INSERT INTO produits (np, nom, couleur, poids) VALUES (4, 'Tapis', 'Rouge', 1423);
+
+INSERT INTO clients (nc, nom, ville) VALUES (1, 'Alice', 'Lyon');
+INSERT INTO clients (nc, nom, ville) VALUES (2, 'Bruno', 'Lyon');
+INSERT INTO clients (nc, nom, ville) VALUES (3, 'Charles', 'Compiègne');
+INSERT INTO clients (nc, nom, ville) VALUES (4, 'Denis', 'Montpellier');
+INSERT INTO clients (nc, nom, ville) VALUES (5, 'Emile', 'Strasbourg');
+
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (1, 1, 1, 1);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (1, 1, 2, 1);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (2, 2, 3, 1);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (4, 3, 3, 200);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 4, 2, 190);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (1, 3, 2, 300);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 1, 2, 120);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 1, 4, 120);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 4, 4, 2);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 1, 1, 3);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 4, 1, 5);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 1, 3, 1);
+INSERT INTO ventes (nr, np, nc, quantite) VALUES (3, 1, 5, 1);
+
+-- exemple requêtes sql
+-- SELECT *
+-- FROM clients;
+
+-- SELECT produits.np, produits.nom
+-- FROM produits
+-- WHERE couleur='Rouge' AND poids>2000 ;
+
+-- SELECT DISTINCT nr
+-- FROM ventes;
+
+-- SELECT DISTINCT clients.nom
+-- from clients JOIN ventes
+-- ON clients.nc = ventes.nc 
+-- WHERE ventes.quantite > 180
+-- AND clients.ville = 'Lyon' ;
+
+-- SELECT DISTINCT representants.nom AS r_nom, clients.nom AS c_nom
+-- FROM representants, clients , produits , ventes
+-- WHERE ventes.nc=clients.nc 
+-- AND ventes.nr=representants.nr 
+-- AND ventes.np=produits.np 
+-- AND ventes.quantite>100 
+-- AND produits.couleur='Rouge' ;
